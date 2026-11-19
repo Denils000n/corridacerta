@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corrida Certa — pare de rodar no prejuízo</title>
+<meta name="description" content="O app que lê a oferta da Uber e do 99 na hora e mostra se vale a pena: R$/km, R$/hora e lucro real. Família acompanha e botão de pânico. Teste 7 dias grátis.">
+<meta property="og:title" content="Corrida Certa — pare de rodar no prejuízo">
+<meta property="og:description" content="Veja na hora se a corrida vale a pena. Teste 7 dias grátis, depois R$ 15/mês.">
+<meta property="og:image" content="poster.jpg">
+<meta name="theme-color" content="#060A0E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'%3E%3Crect width='108' height='108' rx='24' fill='%23000'/%3E%3Cpath fill='%2339FF14' fill-rule='evenodd' d='M54,26 C42.4,26 33,35.4 33,47 C33,62.5 54,84 54,84 C54,84 75,62.5 75,47 C75,35.4 65.6,26 54,26 Z M54,34 A13,13 0 1,0 54,60 A13,13 0 1,0 54,34 Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060A0E; --bg2: #0E1A16; --card: #121A1E; --line: #22313A;
+    --ink: #FFFFFF; --sub: #AAB6BE; --neon: #39FF14; --green: #34C759; --yellow: #FFCC00; --red: #FF3B30; --blue: #0A84FF;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%) fixed; color: var(--ink);
+    font-family: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.45; }
+  a { color: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 18px; }
+  header { display: flex; align-items: center; gap: 10px; padding: 18px 0 6px; }
+  header b { font-size: 20px; font-weight: 900; letter-spacing: .3px; }
+  .tag { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--bg); background: var(--neon); border-radius: 999px; padding: 4px 10px; }
+  h1 { font-size: clamp(34px, 9vw, 46px); line-height: 1.02; font-weight: 900; margin: 18px 0 10px; }
+  h1 em { font-style: normal; color: var(--neon); }
+  .lead { font-size: 17px; color: var(--sub); margin: 0 0 18px; font-weight: 500; }
+  h2 { font-size: 26px; font-weight: 900; margin: 40px 0 12px; line-height: 1.1; }
+  h2 em { font-style: normal; color: var(--neon); }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 0; cursor: pointer;
+    font: 900 19px Montserrat, sans-serif; text-decoration: none; border-radius: 18px; padding: 18px 20px; margin: 10px 0; }
+  .btn.main { background: var(--neon); color: #061008; box-shadow: 0 0 34px rgba(57,255,20,.35); }
+  .btn.wa { background: #25D366; color: #06210F; }
+  .btn.soft { background: var(--card); color: var(--ink); border: 1px solid var(--line); font-size: 16px; }
+  .small { font-size: 13px; color: var(--sub); text-align: center; margin: 2px 0 0; }
+  .video { position: relative; border-radius: 26px; overflow: hidden; border: 1px solid var(--line); background: #000; margin: 22px 0 6px; aspect-ratio: 9 / 16; }
+  .video video { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .grid { display: grid; gap: 12px; }
+  .feat { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px 18px 16px; }
+  .feat h3 { margin: 0 0 4px; font-size: 19px; font-weight: 900; }
+  .feat p { margin: 0; color: var(--sub); font-size: 15px; font-weight: 500; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+  .lights { display: grid; gap: 8px; margin-top: 12px; }
+  .light { border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; font-weight: 900; font-size: 18px; }
+  .card-img { width: 100%; border-radius: 20px; display: block; margin-top: 12px; }
+  .sos { border-color: rgba(255,59,48,.6); background: linear-gradient(180deg, #24110F, var(--card)); }
+  .price { text-align: center; background: var(--card); border: 2px solid var(--neon); border-radius: 26px; padding: 24px 18px; margin-top: 14px; }
+  .price .free { display: inline-block; background: var(--neon); color: #061008; font-weight: 900; font-size: 26px; border-radius: 14px; padding: 6px 16px; }
+  .price .then { font-size: 20px; font-weight: 800; margin: 12px 0 2px; }
+  .price .then b { font-size: 34px; }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 10px; }
+  ol.steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px 14px 60px; position: relative; font-size: 15px; font-weight: 500; color: var(--sub); }
+  ol.steps li b { color: var(--ink); }
+  ol.steps li::before { content: counter(s); position: absolute; left: 14px; top: 13px; width: 32px; height: 32px; border-radius: 50%; background: var(--neon); color: #061008; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; margin-bottom: 10px; }
+  summary { font-weight: 800; cursor: pointer; font-size: 16px; }
+  details p { color: var(--sub); margin: 10px 0 0; font-size: 15px; font-weight: 500; }
+  footer { color: var(--sub); font-size: 12px; text-align: center; padding: 34px 0 120px; }
+  .sticky { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 18px calc(10px + env(safe-area-inset-bottom)); background: rgba(6,10,14,.92); backdrop-filter: blur(8px); border-top: 1px solid var(--line); z-index: 5; }
+  .sticky .btn { max-width: 524px; margin: 0 auto; padding: 15px; }
+  /* aviso para quem abriu pelo navegador do Instagram/TikTok/Kwai (eles bloqueiam o download do app) */
+  #inapp { display: none; background: #2A2205; border: 2px solid var(--yellow); color: #FFF3C2; border-radius: 18px; padding: 14px 16px; margin: 14px 0; font-weight: 600; font-size: 15px; }
+  #inapp b { color: var(--yellow); }
+  #iphone { display: none; background: #2A1416; border: 2px solid var(--red); border-radius: 18px; padding: 14px 16px; margin: 14px 0; font-weight: 600; }
+  .ver { font-size: 12px; color: var(--sub); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg width="38" height="38" viewBox="0 0 108 108" aria-hidden="true"><rect width="108" height="108" rx="26" fill="#000"/><path fill="#39FF14" fill-rule="evenodd" d="M54,26 C42.4,26 33,35.4 33,47 C33,62.5 54,84 54,84 C54,84 75,62.5 75,47 C75,35.4 65.6,26 54,26 Z M54,34 A13,13 0 1,0 54,60 A13,13 0 1,0 54,34 Z"/><path fill="#39FF14" d="M52.6,37 L55.4,37 L55.4,39.2 C58,39.6 59.6,41.2 59.8,43.6 L56.9,43.6 C56.7,42.4 55.7,41.8 54,41.8 C52.3,41.8 51.4,42.5 51.4,43.4 C51.4,44.4 52.3,44.8 54.6,45.3 C57.9,46 60.1,47.1 60.1,50 C60.1,52.4 58.3,54.1 55.4,54.5 L55.4,57 L52.6,57 L52.6,54.5 C49.7,54.1 47.9,52.4 47.8,49.8 L50.7,49.8 C50.9,51.1 52,51.9 54,51.9 C55.9,51.9 57.1,51.2 57.1,50.1 C57.1,49.1 56.2,48.6 53.6,48 C50.5,47.3 48.4,46.3 48.4,43.6 C48.4,41.3 50.1,39.6 52.6,39.2 Z"/></svg>
+    <b>Corrida Certa</b>
+    <span class="tag">7 dias grátis</span>
+  </header>
+
+  <h1>Pare de rodar no <em>prejuízo</em>.</h1>
+  <p class="lead">O app que lê a oferta da <b>Uber</b> e do <b>99</b> na hora e mostra se ela vale a pena: quanto paga por km, por hora e o <b>lucro de verdade</b>. E ainda cuida da sua segurança.</p>
+
+  <div id="inapp">⚠️ Você abriu pelo <b>Instagram / TikTok / Kwai</b>, que bloqueia o download do app.<br>
+    Toque nos <b>3 pontinhos ⋮</b> lá em cima e escolha <b>“Abrir no navegador”</b> (ou “Abrir no Chrome”).
+    <button class="btn soft" id="openChrome" type="button">Abrir no Chrome</button>
+    <button class="btn soft" id="copyLink" type="button">Copiar o link</button>
+  </div>
+  <div id="iphone">📵 O Corrida Certa é só para <b>celular Android</b>. No iPhone ele não funciona.</div>
+
+  <a class="btn main dl" href="#instalar">⬇ BAIXAR E TESTAR GRÁTIS</a>
+  <p class="small">Celular Android · 7 dias grátis · depois R$ 15/mês</p>
+
+  <div class="video">
+    <video src="video.mp4" poster="poster.jpg" controls playsinline preload="metadata"></video>
+  </div>
+  <p class="small">🔊 Ative o som: eu explico tudo em 1 minuto e meio.</p>
+
+  <h2>Em 1 segundo você <em>sabe</em></h2>
+  <div class="grid">
+    <div class="feat">
+      <h3>Card por cima da oferta</h3>
+      <p>Chegou oferta, aparece o card: verde aceita, amarelo pensa, vermelho recusa. Com um som diferente para cada um.</p>
+      <div class="lights">
+        <div class="light" style="background:var(--green)">VERDE <span>aceita</span></div>
+        <div class="light" style="background:var(--yellow);color:#141418">AMARELO <span>pensa</span></div>
+        <div class="light" style="background:var(--red)">VERMELHO <span>recusa</span></div>
+      </div>
+      <img class="card-img" src="card.png" alt="Card real do Corrida Certa sobre uma oferta do 99: R$ 1,96 por km, R$ 45,58 por hora, lucro real R$ 16,36" loading="lazy">
+    </div>
+    <div class="feat">
+      <h3>Lucro real, não só o valor</h3>
+      <p>Tira combustível, manutenção e desgaste do carro. Aquela de R$ 7 que parecia boa? Às vezes sobra menos de R$ 3.</p>
+    </div>
+    <div class="feat">
+      <h3>Meu Dia automático</h3>
+      <p>As corridas finalizadas entram sozinhas, com valor, km e nome do passageiro. Meta do dia, manutenção e relatório dos melhores horários.</p>
+    </div>
+  </div>
+
+  <h2>Sua <em>segurança</em> em primeiro lugar</h2>
+  <div class="grid">
+    <div class="feat">
+      <h3>❤️ Sua família sabe onde você está</h3>
+      <p>Aceitou a corrida: sua família recebe no Telegram ou WhatsApp o endereço de embarque. Terminou: recebe onde você deixou o passageiro. E avisa se você ficar parado demais ou entrar numa área de risco.</p>
+    </div>
+    <div class="feat sos">
+      <h3>🆘 Botão de pânico discreto</h3>
+      <p>Deu problema? Toque 3 vezes na bolinha ou segure. O app grava o áudio e manda sua localização para a família, sem o passageiro perceber.</p>
+    </div>
+    <div class="feat">
+      <h3>🎥 Grava a corrida</h3>
+      <p>Câmera da frente e áudio começam sozinhos quando você aceita. Uma pasta por corrida, fácil de achar e compartilhar.</p>
+    </div>
+  </div>
+
+  <h2>A <em>IA</em> mostra onde rodar</h2>
+  <div class="feat">
+    <h3>🎉 Eventos de agora na cidade</h3>
+    <p>Shows, jogos e feiras de hoje, com o horário de saída do público e o botão do Waze. Chegue antes e pegue as corridas boas.</p>
+  </div>
+
+  <div class="price" id="preco">
+    <div class="free">7 DIAS GRÁTIS</div>
+    <div class="then">depois só <b>R$ 15</b>/mês</div>
+    <p class="small">Sem fidelidade. Uma chave por celular.</p>
+  </div>
+
+  <h2 id="instalar">Como <em>instalar</em></h2>
+  <ol class="steps">
+    <li><b>Baixe o app</b> no botão abaixo (abre no Chrome do seu Android).
+      <a class="btn main" id="download" href="https://raw.githubusercontent.com/Denils000n/corridacerta-atualizacoes/main/CorridaCerta.apk" download="CorridaCerta.apk">⬇ BAIXAR O APP (Android)</a>
+      <span class="ver" id="ver"></span>
+    </li>
+    <li><b>Instale.</b> O Android pede para <b>permitir instalar apps desta fonte</b>: permita. Se aparecer o Play Protect, toque em <b>“Mais detalhes” → “Instalar mesmo assim”</b> (o app não está na Play Store, por isso o aviso).</li>
+    <li><b>Abra o app e mande o seu ID</b> pelo botão <b>“Enviar ID no WhatsApp”</b> que aparece na tela.</li>
+    <li><b>Receba a sua chave</b> (teste de 7 dias), toque em <b>COLAR</b> e <b>ATIVAR</b>. O próprio app te guia no resto.</li>
+  </ol>
+
+  <a class="btn wa" id="wa" href="https://wa.me/5511965775966?text=Ol%C3%A1!%20Quero%20testar%20o%20Corrida%20Certa%207%20dias%20gr%C3%A1tis." target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+
+  <h2>Dúvidas</h2>
+  <details><summary>Funciona no iPhone?</summary><p>Não. Só em celular Android (Android 11 ou mais novo).</p></details>
+  <details><summary>Ele aceita ou recusa corrida por mim?</summary><p>Não. O Corrida Certa só lê a oferta que aparece na tela e mostra o card. Quem decide e toca em aceitar é sempre você.</p></details>
+  <details><summary>Por que não está na Play Store?</summary><p>O app é distribuído direto pelo nosso link. Por isso o Android mostra o aviso na instalação. As atualizações chegam sozinhas pelo próprio app.</p></details>
+  <details><summary>O app do banco vai reclamar?</summary><p>O leitor de ofertas só fica ligado durante a sua jornada e se desliga sozinho quando você abre o app do banco.</p></details>
+  <details><summary>Como pago depois do teste?</summary><p>Pelo WhatsApp: você paga R$ 15 no Pix e recebe a chave do mês para o seu celular.</p></details>
+  <details><summary>Preciso de chip/internet?</summary><p>Para ler as ofertas, não. Para avisar a família e para a IA, sim (usa pouca internet).</p></details>
+
+  <footer>
+    Corrida Certa · suporte: <a href="mailto:suportecorridacerta05@gmail.com">suportecorridacerta05@gmail.com</a><br><br>
+    O Corrida Certa é um app independente e não tem ligação com Uber, 99 ou inDrive. As marcas citadas pertencem aos seus donos.
+    Os valores do vídeo são exemplos.
+  </footer>
+</div>
+
+<div class="sticky"><a class="btn main dl" href="#instalar">⬇ BAIXAR E TESTAR GRÁTIS</a></div>
+
+<script>
+  (function () {
+    var ua = navigator.userAgent || "";
+    var inApp = /Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance|BytedanceWebview|Kwai|Kuaishou|Snack/i.test(ua);
+    var android = /Android/i.test(ua);
+    var ios = /iPhone|iPad|iPod/i.test(ua);
+    if (inApp) document.getElementById("inapp").style.display = "block";
+    if (ios) document.getElementById("iphone").style.display = "block";
+    // Android: abre esta mesma página no Chrome (o navegador do Instagram/TikTok bloqueia baixar o app)
+    document.getElementById("openChrome").onclick = function () {
+      var u = location.href.replace(/^https?:\/\//, "");
+      if (android) location.href = "intent://" + u + "#Intent;scheme=https;package=com.android.chrome;end";
+      else alert("Toque nos 3 pontinhos e escolha “Abrir no navegador”.");
+    };
+    document.getElementById("copyLink").onclick = function () {
+      var b = this;
+      try {
+        navigator.clipboard.writeText(location.href).then(function () { b.textContent = "Link copiado! Cole no Chrome"; });
+      } catch (e) { prompt("Copie o link:", location.href); }
+    };
+    // dentro do Instagram/TikTok o botão de baixar leva para o Chrome primeiro
+    document.getElementById("download").addEventListener("click", function (e) {
+      if (inApp && android) { e.preventDefault(); document.getElementById("openChrome").click(); }
+    });
+    // versão disponível (o mesmo arquivo que o app usa para se atualizar)
+    try {
+      fetch("https://raw.githubusercontent.com/Denils000n/corridacerta-atualizacoes/main/update.json", { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j && j.client) document.getElementById("ver").textContent = "Versão " + j.client.name + " · atualiza sozinho"; })
+        .catch(function () {});
+    } catch (e) {}
+  })();
+</script>
+</body>
+</html>
